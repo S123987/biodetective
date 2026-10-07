@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="BioDetective helps you investigate biological claims with evidence you can inspect.">
+  <title>BioDetective · Biology, followed through the evidence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css?v=0.4.2">
+  <script src="/static/app.js?v=0.4.2" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Chat history">
+      <div class="brand-row">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="brand-copy"><strong>BioDetective</strong><small>RESEARCH WORKSPACE</small></div>
+        <button class="icon-button sidebar-close" id="sidebarClose" aria-label="Close sidebar">×</button>
+      </div>
+
+      <button class="sidebar-action new-chat-button" id="newChatButton">
+        <span class="action-icon plus-icon">+</span><span>New chat</span><kbd>⌘ K</kbd>
+      </button>
+      <button class="sidebar-action" id="searchChatsButton">
+        <span class="action-icon search-icon" aria-hidden="true"></span><span>Search chats</span><kbd>⌘ J</kbd>
+      </button>
+
+      <div class="history-heading">Recent</div>
+      <nav id="conversationList" class="conversation-list" aria-label="Recent conversations"></nav>
+
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-footer">
+        <button class="sidebar-action footer-action" id="settingsButton">
+          <span class="action-icon settings-action-icon" aria-hidden="true">⚙</span><span>Customize BioDetective</span>
+        </button>
+        <button class="sidebar-action footer-action" id="themeToggle">
+          <span class="action-icon theme-icon" id="themeIcon" aria-hidden="true">◐</span><span id="themeLabel">Dark appearance</span>
+        </button>
+        <button class="sidebar-action footer-action" id="aboutButton">
+          <span class="action-icon info-icon" aria-hidden="true">i</span><span>About BioDetective</span>
+        </button>
+        <div class="profile-row">
+          <div class="profile-avatar">BD</div>
+          <div class="profile-copy"><strong>BioDetective AI</strong><small>Evidence first. Always.</small></div>
+          <span class="profile-menu" aria-hidden="true">···</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="history-context-menu" id="historyContextMenu" role="menu" aria-label="Conversation actions" hidden>
+      <button class="history-context-action" id="deleteHistoryButton" type="button" role="menuitem">
+        <span class="history-delete-icon" aria-hidden="true">×</span><span>Delete chat</span>
+      </button>
+    </div>
+
+    <div class="sidebar-scrim" id="sidebarScrim"></div>
+
+    <main class="main-pane">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button mobile-menu" id="mobileMenu" aria-label="Open sidebar">☰</button>
+          <div class="mobile-brand"><span class="brand-mark small" aria-hidden="true"><span></span><span></span><span></span></span><strong>BioDetective</strong></div>
+          <div class="workspace-selector"><span>BioDetective</span><span class="chevron">⌄</span></div>
+        </div>
+        <div class="topbar-right">
+          <span class="connection-pill"><span class="connection-dot" id="connectionDot"></span><span id="connectionLabel">Connecting</span></span>
+          <button class="icon-button settings-top-button" id="settingsTopButton" aria-label="Open settings" title="Settings">⚙</button>
+          <button class="icon-button top-theme" id="topThemeToggle" aria-label="Toggle appearance">◐</button>
+        </div>
+      </header>
+
+      <section class="conversation-stage" id="conversationStage">
+        <section class="welcome-view" id="welcomeView">
+          <div class="welcome-mark" aria-hidden="true"><div class="welcome-orbit orbit-one"></div><div class="welcome-orbit orbit-two"></div><div class="welcome-core">B</div><i class="orbit-dot dot-one"></i><i class="orbit-dot dot-two"></i><i class="orbit-dot dot-three"></i></div>
+          <div class="welcome-kicker"><span class="kicker-dot"></span> A research companion for biology</div>
+          <h1>What are you curious<br class="desktop-break"> about?</h1>
+          <p class="welcome-subtitle">Ask a question or investigate a biological claim.<br class="desktop-break"> Follow the evidence all the way back to its source.</p>
+          <div class="suggestion-grid">
+            <button class="suggestion-card" data-prompt="Does TP53 loss increase drug resistance in breast cancer cells?" data-mode="investigate">
+              <span class="suggestion-icon blue">↗</span><span><strong>Investigate a claim</strong><small>Trace causality across studies</small></span>
+            </button>
+            <button class="suggestion-card" data-prompt="What are the main competing explanations for how the gut microbiome affects immune checkpoint therapy?" data-mode="chat">
+              <span class="suggestion-icon green">⌘</span><span><strong>Explore a mechanism</strong><small>See pathways and alternatives</small></span>
+            </button>
+            <button class="suggestion-card" data-prompt="Find recent evidence on CRISPR base editing safety in hematopoietic stem cells." data-mode="chat">
+              <span class="suggestion-icon amber">⌕</span><span><strong>Search the literature</strong><small>Browse papers with citations</small></span>
+            </button>
+            <button class="suggestion-card" data-prompt="What is the weakest evidential link in this claim: increased mitochondrial ROS causes neuronal cell death?" data-mode="investigate">
+              <span class="suggestion-icon violet">◎</span><span><strong>Find what's missing</strong><small>Identify a useful next test</small></span>
+            </button>
+          </div>
+        </section>
+
+        <section class="message-view hidden" id="messageView" aria-live="polite">
+          <div class="messages" id="messages"></div>
+          <div class="bottom-anchor" id="bottomAnchor"></div>
+        </section>
+      </section>
+
+      <footer class="composer-area">
+        <div class="composer-width">
+          <div class="composer-tabs" role="tablist" aria-label="Assistant mode">
+            <button class="mode-tab active" role="tab" aria-selected="true" data-mode="chat"><span class="tab-chat-icon">✳</span> Chat</button>
+            <button class="mode-tab" role="tab" aria-selected="false" data-mode="investigate"><span class="tab-research-icon">⌕</span> Investigate claim</button>
+            <span class="mode-hint" id="modeHint">Search the web for current biology sources</span>
+          </div>
+          <div class="composer-card" id="composerCard">
+            <div class="attachment-list" id="attachmentList"></div>
+            <textarea id="promptInput" rows="1" aria-label="Message BioDetective" placeholder="Ask anything about biology"></textarea>
+            <div class="composer-controls">
+              <div class="control-group">
+                <input type="file" id="fileInput" class="visually-hidden" multiple accept=".pdf,.docx,.txt,.md,.csv">
+                <button class="composer-tool" id="attachButton" aria-label="Attach files" title="Attach PDF, DOCX, text, Markdown, or CSV files"><span class="attach-symbol">＋</span><span class="tool-label">Attach</span></button>
+                <button class="composer-tool voice-button" id="voiceButton" aria-label="Start voice input" title="Record a biology question for transcription"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3m-4 0h8"></path></svg><span class="tool-label">Voice</span></button>
+                <span class="recording-label hidden" id="recordingLabel"><i></i> Recording · click to stop</span>
+              </div>
+              <div class="control-group right-controls">
+                <span class="model-label" id="modelLabel">GPT · Research</span>
+                <button class="send-button" id="sendButton" aria-label="Send message" title="Send message"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"></path></svg></button>
+              </div>
+            </div>
+          </div>
+          <div class="composer-footnote"><span>BioDetective can make mistakes. Check the original papers before drawing conclusions.</span><span class="footnote-separator">·</span><button id="privacyButton">Privacy &amp; data</button></div>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="modal-backdrop hidden" id="modalBackdrop" role="presentation">
+    <section class="info-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="icon-button modal-close" id="modalClose" aria-label="Close">×</button>
+      <div class="modal-symbol">B</div>
+      <h2 id="modalTitle">Evidence first. Reasoning you can inspect.</h2>
+      <p>BioDetective pairs Google Gemini with scholarly literature search to help you explore biological questions and audit causal claims.</p>
+      <div class="modal-detail"><strong>Connected sources</strong><span>Europe PMC / PubMed · OpenAlex · Crossref</span></div>
+      <div class="modal-detail"><strong>Your files and voice</strong><span>Sent to Gemini for processing when you choose to use them. Google's no-cost API tier may use submitted content to improve products. BioDetective does not save uploads or recordings. Chat history stays in this browser.</span></div>
+      <div class="modal-detail"><strong>Scientific limits</strong><span>Search is not exhaustive. Evidence labels and the pilot BES are model-assisted and uncalibrated; they do not determine biological truth.</span></div>
+      <button class="modal-done" id="modalDone">Got it</button>
+    </section>
+  </div>
+  <div class="modal-backdrop hidden" id="settingsBackdrop" role="presentation">
+    <section class="info-modal settings-modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <button class="icon-button modal-close" id="settingsClose" aria-label="Close settings">×</button>
+      <div class="modal-symbol">⚙</div>
+      <h2 id="settingsTitle">Customize BioDetective</h2>
+      <p>Choose how the assistant reasons and responds. These preferences are saved in this browser.</p>
+      <div class="settings-field">
+        <label for="modelSelect">AI model</label>
+        <select id="modelSelect">
+          <option value="gemini-3.8-flash">Gemini 3.8 Flash · Strongest Flash</option>
+          <option value="gemini-3.5-flash">Gemini 3.5 Flash · Balanced</option>
+          <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite · High throughput</option>
+          <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash-Lite · Fastest</option>
+        </select>
+        <small>Gemini 3.8 Flash stays selected by default. During high demand, BioDetective can try an available faster model and labels the switch. API limits apply; paid keys may incur charges.</small>
+      </div>
+      <div class="settings-grid">
+        <div class="settings-field">
+          <label for="reasoningSelect">Reasoning depth</label>
+          <select id="reasoningSelect">
+            <option value="low">Low · Faster</option>
+            <option value="medium">Medium · Balanced</option>
+            <option value="high">High · More analysis</option>
+          </select>
+        </div>
+        <div class="settings-field">
+          <label for="styleSelect">Chat response style</label>
+          <select id="styleSelect">
+            <option value="concise">Concise</option>
+            <option value="balanced">Balanced</option>
+            <option value="detailed">Detailed</option>
+          </select>
+        </div>
+      </div>
+      <label class="settings-toggle" for="webSearchToggle">
+        <span><strong>Scholarly search in chat</strong><small>Searches Europe PMC / PubMed, OpenAlex, and Crossref. Investigate mode always searches these sources.</small></span>
+        <input type="checkbox" id="webSearchToggle">
+      </label>
+      <div class="settings-field">
+        <label for="customInstructions">Personal instructions</label>
+        <textarea id="customInstructions" rows="3" maxlength="1500" placeholder="For example: explain technical terms and use SI units."></textarea>
+        <small>Used for chat responses; scientific evidence rules still apply.</small>
+      </div>
+      <div class="settings-actions">
+        <button class="settings-reset" id="settingsReset" type="button">Reset defaults</button>
+        <button class="modal-done" id="settingsSave" type="button">Save preferences</button>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
+

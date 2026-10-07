@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+.build-venv/
+.build-output/
+.build-output-final/
+build/
+dist/
+*.spec
+.env
+.env.local
+.env.*.local
+.venv/
+
